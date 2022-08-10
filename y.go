@@ -44,6 +44,8 @@ var yyToknames = [...]string{
 	"'-'",
 	"'*'",
 	"'/'",
+	"'('",
+	"')'",
 }
 
 var yyStatenames = [...]string{}
@@ -52,7 +54,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line calc.y:61
+//line calc.y:72
 
 type Lexer struct {
 	scanner.Scanner
@@ -87,38 +89,39 @@ var yyExca = [...]int8{
 
 const yyPrivate = 57344
 
-const yyLast = 13
+const yyLast = 21
 
 var yyAct = [...]int8{
-	4, 5, 6, 7, 2, 3, 1, 0, 0, 8,
-	9, 10, 11,
+	6, 7, 8, 9, 2, 15, 6, 7, 8, 9,
+	10, 11, 12, 13, 14, 4, 8, 9, 3, 1,
+	5,
 }
 
 var yyPact = [...]int16{
-	1, -1000, -5, -1000, 1, 1, 1, 1, -5, -5,
-	-5, -5,
+	11, -1000, 1, -1000, -1000, 11, 11, 11, 11, 11,
+	-5, 9, 9, -1000, -1000, -1000,
 }
 
 var yyPgo = [...]int8{
-	0, 6, 4,
+	0, 19, 4, 18,
 }
 
 var yyR1 = [...]int8{
-	0, 1, 2, 2, 2, 2, 2,
+	0, 1, 2, 2, 2, 2, 2, 3, 3,
 }
 
 var yyR2 = [...]int8{
-	0, 1, 3, 3, 3, 3, 1,
+	0, 1, 1, 3, 3, 3, 3, 1, 3,
 }
 
 var yyChk = [...]int16{
-	-1000, -1, -2, 4, 5, 6, 7, 8, -2, -2,
-	-2, -2,
+	-1000, -1, -2, -3, 4, 9, 5, 6, 7, 8,
+	-2, -2, -2, -2, -2, 10,
 }
 
 var yyDef = [...]int8{
-	0, -2, 1, 6, 0, 0, 0, 0, 2, 3,
-	4, 5,
+	0, -2, 1, 2, 7, 0, 0, 0, 0, 0,
+	0, 3, 4, 5, 6, 8,
 }
 
 var yyTok1 = [...]int8{
@@ -126,7 +129,7 @@ var yyTok1 = [...]int8{
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 7, 5, 3, 6, 3, 8,
+	9, 10, 7, 5, 3, 6, 3, 8,
 }
 
 var yyTok2 = [...]int8{
@@ -476,40 +479,46 @@ yydefault:
 
 	case 1:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line calc.y:35
+//line calc.y:40
 		{
 			yyVAL.expr = yyDollar[1].expr
 			yylex.(*Lexer).result = yyVAL.expr
 		}
-	case 2:
+	case 3:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:42
+//line calc.y:48
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '+', right: yyDollar[3].expr}
 		}
-	case 3:
+	case 4:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:46
+//line calc.y:52
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '-', right: yyDollar[3].expr}
 		}
-	case 4:
+	case 5:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:50
+//line calc.y:56
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '*', right: yyDollar[3].expr}
 		}
-	case 5:
+	case 6:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:54
+//line calc.y:60
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '/', right: yyDollar[3].expr}
 		}
-	case 6:
+	case 7:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line calc.y:58
+//line calc.y:65
 		{
 			yyVAL.expr = NumExpr{literal: yyDollar[1].token.literal}
+		}
+	case 8:
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line calc.y:69
+		{
+			yyVAL.expr = yyDollar[2].expr
 		}
 	}
 	goto yystack /* stack new state and value */

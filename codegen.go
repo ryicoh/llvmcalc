@@ -38,6 +38,12 @@ func codegen(entry *ir.Block, expression Expression) value.Value {
 		switch expr.operator {
 		case '+':
 			return entry.NewAdd(left, right)
+		case '-':
+			return entry.NewSub(left, right)
+		case '*':
+			return entry.NewMul(left, right)
+		case '/':
+			return entry.NewUDiv(left, right)
 		default:
 			panic("???")
 		}

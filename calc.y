@@ -39,15 +39,25 @@ program:
 
 
 expr:
-  expr '+' expr {
-    $$ = BinOpExpr{left: $1, operator: '+', right: $3}
-  }
-  | expr '-' expr {
-    $$ = BinOpExpr{left: $1, operator: '-', right: $3}
-  }
-  | NUMBER {
-    $$ = NumExpr{literal: $1.literal}
-  };
+    expr '+' expr {
+      $$ = BinOpExpr{left: $1, operator: '+', right: $3}
+    }
+  |
+    expr '-' expr {
+      $$ = BinOpExpr{left: $1, operator: '-', right: $3}
+    }
+  |
+    expr '*' expr {
+      $$ = BinOpExpr{left: $1, operator: '*', right: $3}
+    }
+  |
+    expr '/' expr {
+      $$ = BinOpExpr{left: $1, operator: '/', right: $3}
+    }
+  |
+    NUMBER {
+      $$ = NumExpr{literal: $1.literal}
+    };
 %%
 
 type Lexer struct {

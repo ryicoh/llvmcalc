@@ -42,6 +42,8 @@ var yyToknames = [...]string{
 	"NUMBER",
 	"'+'",
 	"'-'",
+	"'*'",
+	"'/'",
 }
 
 var yyStatenames = [...]string{}
@@ -50,7 +52,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line calc.y:51
+//line calc.y:61
 
 type Lexer struct {
 	scanner.Scanner
@@ -85,34 +87,38 @@ var yyExca = [...]int8{
 
 const yyPrivate = 57344
 
-const yyLast = 9
+const yyLast = 13
 
 var yyAct = [...]int8{
-	4, 5, 2, 3, 1, 0, 0, 6, 7,
+	4, 5, 6, 7, 2, 3, 1, 0, 0, 8,
+	9, 10, 11,
 }
 
 var yyPact = [...]int16{
-	-1, -1000, -5, -1000, -1, -1, -5, -5,
+	1, -1000, -5, -1000, 1, 1, 1, 1, -5, -5,
+	-5, -5,
 }
 
 var yyPgo = [...]int8{
-	0, 4, 2,
+	0, 6, 4,
 }
 
 var yyR1 = [...]int8{
-	0, 1, 2, 2, 2,
+	0, 1, 2, 2, 2, 2, 2,
 }
 
 var yyR2 = [...]int8{
-	0, 1, 3, 3, 1,
+	0, 1, 3, 3, 3, 3, 1,
 }
 
 var yyChk = [...]int16{
-	-1000, -1, -2, 4, 5, 6, -2, -2,
+	-1000, -1, -2, 4, 5, 6, 7, 8, -2, -2,
+	-2, -2,
 }
 
 var yyDef = [...]int8{
-	0, -2, 1, 4, 0, 0, 2, 3,
+	0, -2, 1, 6, 0, 0, 0, 0, 2, 3,
+	4, 5,
 }
 
 var yyTok1 = [...]int8{
@@ -120,7 +126,7 @@ var yyTok1 = [...]int8{
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 5, 3, 6,
+	3, 3, 7, 5, 3, 6, 3, 8,
 }
 
 var yyTok2 = [...]int8{
@@ -483,13 +489,25 @@ yydefault:
 		}
 	case 3:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:45
+//line calc.y:46
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '-', right: yyDollar[3].expr}
 		}
 	case 4:
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line calc.y:50
+		{
+			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '*', right: yyDollar[3].expr}
+		}
+	case 5:
+		yyDollar = yyS[yypt-3 : yypt+1]
+//line calc.y:54
+		{
+			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '/', right: yyDollar[3].expr}
+		}
+	case 6:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line calc.y:48
+//line calc.y:58
 		{
 			yyVAL.expr = NumExpr{literal: yyDollar[1].token.literal}
 		}

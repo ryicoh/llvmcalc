@@ -7,22 +7,7 @@ import __yyfmt__ "fmt"
 
 //line calc.y:2
 
-type Expression interface{}
-type Token struct {
-	token   int
-	literal string
-}
-
-type NumExpr struct {
-	literal string
-}
-type BinOpExpr struct {
-	left     Expression
-	operator rune
-	right    Expression
-}
-
-//line calc.y:20
+//line calc.y:5
 type yySymType struct {
 	yys   int
 	token Token
@@ -50,13 +35,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line calc.y:68
-
-func Parse(yylex yyLexer) int {
-	yyDebug = 1
-	yyErrorVerbose = true
-	return yyParse(yylex)
-}
+//line calc.y:53
 
 //line yacctab:1
 var yyExca = [...]int8{
@@ -457,44 +436,44 @@ yydefault:
 
 	case 1:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line calc.y:36
+//line calc.y:21
 		{
 			yyVAL.expr = yyDollar[1].expr
 			yylex.(*Lexer).result = yyVAL.expr
 		}
 	case 3:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:44
+//line calc.y:29
 		{
-			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '+', right: yyDollar[3].expr}
+			yyVAL.expr = BinaryOperatorExpression{left: yyDollar[1].expr, operator: '+', right: yyDollar[3].expr}
 		}
 	case 4:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:48
+//line calc.y:33
 		{
-			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '-', right: yyDollar[3].expr}
+			yyVAL.expr = BinaryOperatorExpression{left: yyDollar[1].expr, operator: '-', right: yyDollar[3].expr}
 		}
 	case 5:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:52
+//line calc.y:37
 		{
-			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '*', right: yyDollar[3].expr}
+			yyVAL.expr = BinaryOperatorExpression{left: yyDollar[1].expr, operator: '*', right: yyDollar[3].expr}
 		}
 	case 6:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:56
+//line calc.y:41
 		{
-			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '/', right: yyDollar[3].expr}
+			yyVAL.expr = BinaryOperatorExpression{left: yyDollar[1].expr, operator: '/', right: yyDollar[3].expr}
 		}
 	case 7:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line calc.y:61
+//line calc.y:46
 		{
-			yyVAL.expr = NumExpr{literal: yyDollar[1].token.literal}
+			yyVAL.expr = NumberExpression{literal: yyDollar[1].token.literal}
 		}
 	case 8:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:65
+//line calc.y:50
 		{
 			yyVAL.expr = yyDollar[2].expr
 		}

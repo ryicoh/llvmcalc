@@ -1,20 +1,5 @@
 %{
 package llvmcalc
-
-type Expression interface{}
-type Token struct {
-    token   int
-    literal string
-}
-
-type NumExpr struct {
-    literal string
-}
-type BinOpExpr struct {
-    left     Expression
-    operator rune
-    right    Expression
-}
 %}
 
 %union{
@@ -42,33 +27,27 @@ expr:
     primary
   |
     expr '+' expr {
-      $$ = BinOpExpr{left: $1, operator: '+', right: $3}
+      $$ = BinaryOperatorExpression{left: $1, operator: '+', right: $3}
     }
   |
     expr '-' expr {
-      $$ = BinOpExpr{left: $1, operator: '-', right: $3}
+      $$ = BinaryOperatorExpression{left: $1, operator: '-', right: $3}
     }
   |
     expr '*' expr {
-      $$ = BinOpExpr{left: $1, operator: '*', right: $3}
+      $$ = BinaryOperatorExpression{left: $1, operator: '*', right: $3}
     }
   |
     expr '/' expr {
-      $$ = BinOpExpr{left: $1, operator: '/', right: $3}
+      $$ = BinaryOperatorExpression{left: $1, operator: '/', right: $3}
     }
 
 primary:
     NUMBER {
-      $$ = NumExpr{literal: $1.literal}
+      $$ = NumberExpression{literal: $1.literal}
     }
   |
     '(' expr ')' {
       $$ = $2
     }
 %%
-
-func Parse(yylex yyLexer) int {
-  yyDebug = 1
-  yyErrorVerbose = true
-  return yyParse(yylex);
-}

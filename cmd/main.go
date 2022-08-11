@@ -3,12 +3,13 @@ package main
 import (
 	"os"
 	"strings"
+
 	"github.com/ryicoh/llvmcalc"
 )
 
 func main() {
 	l := new(llvmcalc.Lexer)
-	l.Init(strings.NewReader(os.Args[1]))
+	l.Scanner.Init(strings.NewReader(os.Args[1]))
 	llvmcalc.Parse(l)
 
 	asm := llvmcalc.Codegen(l)

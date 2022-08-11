@@ -7,10 +7,6 @@ import __yyfmt__ "fmt"
 
 //line calc.y:2
 
-import (
-	"text/scanner"
-)
-
 type Expression interface{}
 type Token struct {
 	token   int
@@ -26,7 +22,7 @@ type BinOpExpr struct {
 	right    Expression
 }
 
-//line calc.y:24
+//line calc.y:20
 type yySymType struct {
 	yys   int
 	token Token
@@ -54,25 +50,7 @@ const yyEofCode = 1
 const yyErrCode = 2
 const yyInitialStackSize = 16
 
-//line calc.y:72
-
-type Lexer struct {
-	scanner.Scanner
-	result Expression
-}
-
-func (l *Lexer) Lex(lval *yySymType) int {
-	token := int(l.Scan())
-	if token == scanner.Int {
-		token = NUMBER
-	}
-	lval.token = Token{token: token, literal: l.TokenText()}
-	return token
-}
-
-func (l *Lexer) Error(e string) {
-	panic(e)
-}
+//line calc.y:68
 
 func Parse(yylex yyLexer) int {
 	yyDebug = 1
@@ -479,44 +457,44 @@ yydefault:
 
 	case 1:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line calc.y:40
+//line calc.y:36
 		{
 			yyVAL.expr = yyDollar[1].expr
 			yylex.(*Lexer).result = yyVAL.expr
 		}
 	case 3:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:48
+//line calc.y:44
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '+', right: yyDollar[3].expr}
 		}
 	case 4:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:52
+//line calc.y:48
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '-', right: yyDollar[3].expr}
 		}
 	case 5:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:56
+//line calc.y:52
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '*', right: yyDollar[3].expr}
 		}
 	case 6:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:60
+//line calc.y:56
 		{
 			yyVAL.expr = BinOpExpr{left: yyDollar[1].expr, operator: '/', right: yyDollar[3].expr}
 		}
 	case 7:
 		yyDollar = yyS[yypt-1 : yypt+1]
-//line calc.y:65
+//line calc.y:61
 		{
 			yyVAL.expr = NumExpr{literal: yyDollar[1].token.literal}
 		}
 	case 8:
 		yyDollar = yyS[yypt-3 : yypt+1]
-//line calc.y:69
+//line calc.y:65
 		{
 			yyVAL.expr = yyDollar[2].expr
 		}

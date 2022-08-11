@@ -11,11 +11,11 @@ import (
 
 func Codegen(l *Lexer) string {
 	m := ir.NewModule()
-	main := m.NewFunc("main", types.I64)
+	main := m.NewFunc("main", types.I8)
 	entry := main.NewBlock("")
 
 	res := codegen(entry, l.result)
-	entry.NewRet(res)
+	entry.NewRet(entry.NewFPToSI(res, types.I8))
 
 	return m.String()
 }
@@ -23,27 +23,25 @@ func Codegen(l *Lexer) string {
 func codegen(entry *ir.Block, expression Expression) value.Value {
 	switch expr := expression.(type) {
 	case NumExpr:
-		i, err := strconv.Atoi(expr.literal)
+		f, err := strconv.ParseFloat(expr.literal, 64)
 		if err != nil {
 			panic(err)
 		}
 
-		a := entry.NewAlloca(types.I64)
-		entry.NewStore(constant.NewInt(types.I64, int64(i)), a)
-		return entry.NewLoad(types.I64, a)
+		return constant.NewFloat(types.Double, float64(f))
 
 	case BinOpExpr:
 		left := codegen(entry, expr.left)
 		right := codegen(entry, expr.right)
 		switch expr.operator {
 		case '+':
-			return entry.NewAdd(left, right)
+			return entry.NewFAdd(left, right)
 		case '-':
-			return entry.NewSub(left, right)
+			return entry.NewFSub(left, right)
 		case '*':
-			return entry.NewMul(left, right)
+			return entry.NewFMul(left, right)
 		case '/':
-			return entry.NewUDiv(left, right)
+			return entry.NewFDiv(left, right)
 		default:
 			panic("???")
 		}
